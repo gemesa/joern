@@ -54,6 +54,14 @@ class Ghidra2Cpg extends X2CpgFrontend[Config] {
               program = project.openProgram("/", domainFile.getName(), true)
               addProgramToCpg(program, inputFile.getCanonicalPath, cpg)
             }
+          }
+          // .gzf is the extension of Ghidra zip files
+          else if (inputFile.getName().endsWith(".gzf")) {
+            // The 'true' parameter indicates this is a temporary project
+            project =
+              GhidraProject.createProject(tempWorkingDir.absolutePathAsString, CommandLineConfig.projectName, true)
+            program = project.importProgram(inputFile)
+            addProgramToCpg(program, inputFile.getCanonicalPath, cpg)
           } else {
             // The 'true' parameter indicates this is a temporary project
             project =
